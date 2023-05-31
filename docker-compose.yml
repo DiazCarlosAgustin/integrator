@@ -1,0 +1,81 @@
+version: "3"
+services:
+  api_getaway:
+      build:
+        context: .
+        dockerfile: ./apps/api-getaway/Dockerfile
+        target: development
+      command: npm run start:dev api-getaway
+      env_file:
+        - ./apps/api-getaway/.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+        - api_parameters
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3000:3000'
+      networks:
+        - network_test
+  api_parameters:
+      build:
+        context: .
+        dockerfile: ./apps/parameters/Dockerfile
+        target: development
+      command: npm run start:dev parameters
+      env_file:
+        - ./apps/parameters/.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3001:3001'
+      networks:
+        - network_test
+
+  db_mysql:
+    image: mysql:5.7
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'integrador'
+      MYSQL_USER: 'test'
+      MYSQL_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+      - network_test
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    expose:
+      - '5672'
+      - '15672'
+    env_file:
+      - .env
+    networks:
+      - network_test
+
+volumes:
+  my-db:
+    driver: local
+networks:
+  network_test:
+    driver: bridge

@@ -1,22 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/integrator/src",
+  "sourceRoot": "apps/api-getaway/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/integrator/tsconfig.app.json"
+    "tsConfigPath": "apps/api-getaway/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/integrator",
+  "root": "apps/api-getaway",
   "projects": {
-    "api-gateway": {
+    "api-getaway": {
       "type": "application",
-      "root": "apps/api-gateway",
+      "root": "apps/api-getaway",
       "entryFile": "main",
-      "sourceRoot": "apps/api-gateway/src",
+      "sourceRoot": "apps/api-getaway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+        "tsConfigPath": "apps/api-getaway/tsconfig.app.json"
       }
     },
     "common": {
@@ -26,6 +26,15 @@
       "sourceRoot": "libs/common/src",
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "parameters": {
+      "type": "application",
+      "root": "apps/parameters",
+      "entryFile": "main",
+      "sourceRoot": "apps/parameters/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/parameters/tsconfig.app.json"
       }
     }
   }
