@@ -1,9 +1,25 @@
+import { ParametersEntity } from '@app/common';
 import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ParametersService {
-  addHello(data) {
-    Logger.debug(`Se agrego correctamente ${data}`);
+  constructor(
+    @InjectRepository(ParametersEntity)
+    private readonly paramsRepository: Repository<ParametersEntity>,
+  ) {}
+  async addNewParameter(data): Promise<ParametersEntity[] | []> {
+    try {
+      const newParameter = await this.paramsRepository.create(data);
+      const result = await this.paramsRepository.save(newParameter);
+      Logger.debug(`Se agrego correctamente ${JSON.stringify(result)}`);
+
+      return result;
+    } catch (error) {
+      Logger.error(error.message);
+    }
+    return [];
   }
 
   getHello() {
