@@ -1,4 +1,4 @@
-import { ParametersEntity } from '@app/common';
+import { ParametersEntity, UpdateParameterDTO } from '@app/common';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,16 +13,71 @@ export class ParametersService {
     try {
       const newParameter = await this.paramsRepository.create(data);
       const result = await this.paramsRepository.save(newParameter);
-      Logger.debug(`Se agrego correctamente ${JSON.stringify(result)}`);
 
       return result;
     } catch (error) {
       Logger.error(error.message);
+      throw error.message;
     }
-    return [];
   }
 
-  getHello() {
-    return { data: [1, 2, 3, 4, 5, 6] };
+  async getAllParameters(): Promise<ParametersEntity[] | []> {
+    try {
+      return await this.paramsRepository.find({});
+    } catch (error) {
+      Logger.error(error.message);
+      throw error.message;
+    }
+  }
+
+  async getOneParameter(data): Promise<ParametersEntity[] | []> {
+    try {
+      return await this.paramsRepository.find({
+        where: { id: data.id },
+      });
+    } catch (error) {
+      Logger.error(error.message);
+      throw error.message;
+    }
+  }
+  async updateParameter(data: UpdateParameterDTO): Promise<any> {
+    try {
+      return await this.paramsRepository
+        .update(<string>data.id, data)
+        .then((response) => {
+          if (response) {
+            return {
+              message: 'parameters was successfully updated',
+              success: true,
+            };
+          }
+        })
+        .catch((error) => {
+          return { message: error.message, error: true };
+        });
+    } catch (error) {
+      Logger.error(error.message);
+      throw error.message;
+    }
+  }
+  async deleteParameter(data): Promise<any> {
+    try {
+      return await this.paramsRepository
+        .delete(<string>data.id)
+        .then((response) => {
+          if (response) {
+            return {
+              message: 'parameters was successfully deleted',
+              success: true,
+            };
+          }
+        })
+        .catch((error) => {
+          return { message: error.message, error: true };
+        });
+    } catch (error) {
+      Logger.error(error.message);
+      throw error.message;
+    }
   }
 }

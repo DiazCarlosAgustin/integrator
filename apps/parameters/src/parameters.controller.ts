@@ -1,5 +1,5 @@
 import { RmqService } from '@app/common';
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { ParametersService } from './parameters.service';
 import {
   Payload,
@@ -26,13 +26,20 @@ export class ParametersController {
   }
 
   @MessagePattern({ cmd: 'get_parameters' })
-  async getHello(@Ctx() context: RmqContext) {
-    this.rmqService.ack(context);
-    return await this.parametersService.getHello();
+  async getAllParameters(@Ctx() context: RmqContext) {
+    return await this.parametersService.getAllParameters().then((response) => {
+      this.rmqService.ack(context);
+      return response;
+    });
   }
 
-  @Get('/get')
-  async getHelloText() {
-    return await this.parametersService.getHello();
+  @MessagePattern({ cmd: 'get_one__parameters' })
+  async getOneParameter(@Payload() data, @Ctx() context: RmqContext) {
+    return await this.parametersService
+      .getOneParameter(data)
+      .then((response) => {
+        this.rmqService.ack(context);
+        return response;
+      });
   }
 }

@@ -11,15 +11,16 @@ export class ApiGatewayController {
     return await this.apiGetawayService
       .createParameter(parameter)
       .then((result) => {
-        console.log(result);
         return result;
       })
       .catch((err) => {
         return { message: err.message, error: true };
       });
   }
-  @Get('/get_all')
-  async getHello(): Promise<any> {
-    return await this.apiGetawayService.getHello();
+  @Get('/parameters/')
+  async getAllParameters(): Promise<any> {
+    return await this.apiGetawayService.getAllParameters().catch((err) => {
+      return { message: err.message, error: true };
+    });
   }
 }

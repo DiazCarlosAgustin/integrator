@@ -20,9 +20,11 @@ export class ApiGetawayService {
     }
   }
 
-  async getHello(): Promise<any> {
+  async getAllParameters(): Promise<any> {
     try {
-      return await this.parameterClient.send({ cmd: 'get_parameters' }, {});
+      return await lastValueFrom(
+        this.parameterClient.send({ cmd: 'get_parameters' }, {}),
+      );
     } catch (error) {
       Logger.error(error);
       throw error;

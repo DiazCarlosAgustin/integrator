@@ -8,3 +8,4 @@ export * from './database/entities/parameters.entity';
 
 /**Dtos */
 export * from './database/dtos/parameters/parameters.dto';
+export * from './database/dtos/parameters/updateParameter.dto';
