@@ -4,8 +4,12 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --silent
+# uninstall the current bcrypt modules
+RUN npm uninstall bcrypt
 
+# install the bcrypt modules for the machine
+RUN npm install bcrypt
 COPY . .
 
 RUN npm run build

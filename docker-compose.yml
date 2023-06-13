@@ -37,6 +37,24 @@ services:
         - '3001:3001'
       networks:
         - network_test
+  api_auth:
+      build:
+        context: .
+        dockerfile: ./apps/auth/Dockerfile
+        target: development
+      command: npm run start:dev auth
+      env_file:
+        - ./apps/api-getaway/.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3002:3002'
+      networks:
+        - network_test
 
   db_mysql:
     image: mysql:5.7

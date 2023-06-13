@@ -5,7 +5,9 @@ export * from './rabbitMq/rmq.service';
 
 /** Entities */
 export * from './database/entities/parameters.entity';
+export * from './database/entities/users.entity';
 
 /**Dtos */
 export * from './database/dtos/parameters/parameters.dto';
 export * from './database/dtos/parameters/updateParameter.dto';
+export * from './database/dtos/users/users.dto';
