@@ -6,7 +6,9 @@ export const getCurrentUserByContext = (
   context: ExecutionContext,
 ): UsersEntity => {
   if (context.getType() === 'http') {
-    return context.switchToHttp().getRequest().user;
+    const user = context.switchToHttp().getRequest().user;
+    delete user.password
+    return user
   }
   if (context.getType() === 'rpc') {
     return context.switchToRpc().getData().user;
