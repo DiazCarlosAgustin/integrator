@@ -1,8 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
-
+import { Injectable, Inject } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class SyncService {
-  async executeFill(serviceId: string): Promise<any> {
-    return serviceId;
+  constructor(@Inject('SERVICES') private servicesClient: ClientProxy) {}
+  async executeFill(serviceId): Promise<any> {
+    const service = serviceId.serviceId;
+    return await lastValueFrom(
+      this.servicesClient.send({ cmd: 'getServiceById' }, { service }),
+    );
   }
 }

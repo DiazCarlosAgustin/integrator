@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { RmqService } from '@app/common';
 import { FlexxusService } from './flexxus.service';
 import {

@@ -92,14 +92,4 @@ export class ServicesService {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-  async executeFillTable(id: string) {
-    try {
-      const data = await this.findOne(id);
-
-      return data;
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { ServicesController } from './services.controller';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from '@app/common';
+import { RmqModule, DatabaseModule } from '@app/common';
 
 @Module({
   imports: [
@@ -10,6 +10,7 @@ import { DatabaseModule } from '@app/common';
       isGlobal: true,
       envFilePath: './apps/api-getaway/.env',
     }),
+    RmqModule,
     DatabaseModule,
   ],
   controllers: [ServicesController],

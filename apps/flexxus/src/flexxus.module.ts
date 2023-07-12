@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { FlexxusController } from './flexxus.controller';
 import { FlexxusService } from './flexxus.service';
-import { DatabaseModule, RmqModule } from '@app/common';
+import { RmqModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -10,7 +10,6 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: './apps/api-getaway/.env',
     }),
-    DatabaseModule,
     RmqModule,
   ],
   controllers: [FlexxusController],

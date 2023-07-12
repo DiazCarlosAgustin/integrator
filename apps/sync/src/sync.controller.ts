@@ -6,11 +6,14 @@ import {
   RmqContext,
   Payload,
 } from '@nestjs/microservices';
+import { RmqService } from '@app/common';
 
 @Controller()
 export class SyncController {
-  rmqService: any;
-  constructor(private readonly syncService: SyncService) {}
+  constructor(
+    private readonly rmqService: RmqService,
+    private readonly syncService: SyncService,
+  ) {}
 
   @MessagePattern({ cmd: 'execute_fill' })
   async executeFill(@Payload() data, @Ctx() context: RmqContext) {

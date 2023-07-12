@@ -1,11 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
-import {
-  Payload,
-  RmqContext,
-  Ctx,
-  MessagePattern,
-} from '@nestjs/microservices';
+// import {
+//   Payload,
+//   RmqContext,
+//   Ctx,
+//   MessagePattern,
+// } from '@nestjs/microservices';
 import { RmqService } from '@app/common';
 @Controller()
 export class CompaniesController {
