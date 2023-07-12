@@ -1,6 +1,14 @@
 import { Module, Global } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+/**Entities */
+import { UsersEntity } from './entities/users.entity';
+import { CompaniesEntity } from './entities/companies.entity';
+import { ParametersEntity } from './entities/parameters.entity';
+import { PlatformsEntity } from './entities/platforms.entity';
+import { ServicesEntity } from './entities/services.entity';
+import { ServiceParametersEntity } from './entities/serviceParameters.entity';
+import { ProductEntity } from './entities/products.entity';
 @Global()
 @Module({
   imports: [
@@ -17,6 +25,15 @@ import { ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([
+      UsersEntity,
+      CompaniesEntity,
+      ParametersEntity,
+      PlatformsEntity,
+      ServicesEntity,
+      ServiceParametersEntity,
+      ProductEntity,
+    ]),
   ],
   providers: [],
   exports: [TypeOrmModule],

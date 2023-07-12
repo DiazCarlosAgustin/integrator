@@ -10,8 +10,15 @@ export * from './auth/auth.modules';
 /** Entities */
 export * from './database/entities/parameters.entity';
 export * from './database/entities/users.entity';
+export * from './database/entities/companies.entity';
+export * from './database/entities/platforms.entity';
+export * from './database/entities/services.entity';
+export * from './database/entities/products.entity';
+export * from './database/entities/serviceParameters.entity';
 
 /**Dtos */
 export * from './database/dtos/parameters/parameters.dto';
 export * from './database/dtos/parameters/updateParameter.dto';
+export * from './database/dtos/services/createService.dto';
+export * from './database/dtos/services/updateService.dto';
 export * from './database/dtos/users/users.dto';

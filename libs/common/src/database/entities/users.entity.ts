@@ -4,15 +4,25 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  PrimaryGeneratedColumn,
   Generated,
+  JoinTable,
+  ManyToOne,
   UpdateDateColumn,
 } from 'typeorm';
+import { CompaniesEntity } from './companies.entity';
 
 @Entity('users')
 export class UsersEntity {
-  @Column({ type: 'uuid', length: 60, primary: true, nullable: false })
+  @PrimaryGeneratedColumn('uuid')
   @Generated('uuid')
   id: string;
+
+  @ManyToOne(() => CompaniesEntity, (company) => company.user, {
+    cascade: true,
+  })
+  @JoinTable()
+  company: CompaniesEntity;
 
   @Column({ nullable: false })
   name: string;

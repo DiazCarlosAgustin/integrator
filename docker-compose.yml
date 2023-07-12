@@ -7,11 +7,17 @@ services:
         target: development
       command: npm run start:dev api-getaway
       env_file:
-        - ./apps/api-getaway/.env
+        - ./.env
       depends_on:
         - db_mysql
         - rabbitmq
         - api_parameters
+        - api_auth
+        - api_companies
+        - api_flexxus
+        - api_products
+        - api_services
+        - api_sync
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -26,7 +32,7 @@ services:
         target: development
       command: npm run start:dev parameters
       env_file:
-        - ./apps/parameters/.env
+        - ./.env
       depends_on:
         - db_mysql
         - rabbitmq
@@ -44,7 +50,7 @@ services:
         target: development
       command: npm run start:dev auth
       env_file:
-        - ./apps/api-getaway/.env
+        - ./.env
       depends_on:
         - db_mysql
         - rabbitmq
@@ -53,6 +59,96 @@ services:
         - /usr/src/app/node_modules
       ports:
         - '3002:3002'
+      networks:
+        - network_test
+  api_companies:
+      build:
+        context: .
+        dockerfile: ./apps/auth/Dockerfile
+        target: development
+      command: npm run start:dev companies
+      env_file:
+        - ./.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3003:3003'
+      networks:
+        - network_test
+  api_flexxus:
+      build:
+        context: .
+        dockerfile: ./apps/flexxus/Dockerfile
+        target: development
+      command: npm run start:dev companies
+      env_file:
+        - ./.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3004:3004'
+      networks:
+        - network_test
+  api_products:
+      build:
+        context: .
+        dockerfile: ./apps/products/Dockerfile
+        target: development
+      command: npm run start:dev products
+      env_file:
+        - ./.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3005:3005'
+      networks:
+        - network_test
+  api_services:
+      build:
+        context: .
+        dockerfile: ./apps/services/Dockerfile
+        target: development
+      command: npm run start:dev services
+      env_file:
+        - ./.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3006:3006'
+      networks:
+        - network_test
+  api_sync:
+      build:
+        context: .
+        dockerfile: ./apps/sync/Dockerfile
+        target: development
+      command: npm run start:dev sync
+      env_file:
+        - ./.env
+      depends_on:
+        - db_mysql
+        - rabbitmq
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      ports:
+        - '3007:3007'
       networks:
         - network_test
 

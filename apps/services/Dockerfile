@@ -10,7 +10,6 @@ RUN npm uninstall bcrypt
 
 # install the bcrypt modules for the machine
 RUN npm install bcrypt
-
 COPY . .
 
 RUN npm run build
@@ -30,4 +29,4 @@ COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/parameters/main"]
+CMD ["node", "dist/apps/api-getaway/main"]

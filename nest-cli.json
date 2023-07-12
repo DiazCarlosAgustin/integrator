@@ -45,6 +45,51 @@
       "compilerOptions": {
         "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
+    },
+    "companies": {
+      "type": "application",
+      "root": "apps/companies",
+      "entryFile": "main",
+      "sourceRoot": "apps/companies/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/companies/tsconfig.app.json"
+      }
+    },
+    "products": {
+      "type": "application",
+      "root": "apps/products",
+      "entryFile": "main",
+      "sourceRoot": "apps/products/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/products/tsconfig.app.json"
+      }
+    },
+    "sync": {
+      "type": "application",
+      "root": "apps/sync",
+      "entryFile": "main",
+      "sourceRoot": "apps/sync/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sync/tsconfig.app.json"
+      }
+    },
+    "flexxus": {
+      "type": "application",
+      "root": "apps/flexxus",
+      "entryFile": "main",
+      "sourceRoot": "apps/flexxus/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/flexxus/tsconfig.app.json"
+      }
+    },
+    "services": {
+      "type": "application",
+      "root": "apps/services",
+      "entryFile": "main",
+      "sourceRoot": "apps/services/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/services/tsconfig.app.json"
+      }
     }
   }
 }

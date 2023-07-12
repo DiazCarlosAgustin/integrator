@@ -3,7 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { ApiGatewayController } from './api-getaway.controller';
 import { ApiGetawayService } from './api-getaway.service';
 import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
-import { PARAMETERS_SERVICES } from './constants/services';
+import {
+  PARAMETERS_SERVICES,
+  SYNC_SERVICES,
+  SERVICE_SERVICES,
+} from './constants/services';
 
 @Module({
   imports: [
@@ -15,6 +19,12 @@ import { PARAMETERS_SERVICES } from './constants/services';
     AuthModule,
     RmqModule.register({
       name: PARAMETERS_SERVICES,
+    }),
+    RmqModule.register({
+      name: SERVICE_SERVICES,
+    }),
+    RmqModule.register({
+      name: SYNC_SERVICES,
     }),
   ],
   controllers: [ApiGatewayController],

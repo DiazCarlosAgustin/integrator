@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ParametersController } from './parameters.controller';
-import { ParametersService } from './parameters.service';
+import { SyncController } from './sync.controller';
+import { SyncService } from './sync.service';
 import { RmqModule, DatabaseModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -12,7 +13,7 @@ import { ConfigModule } from '@nestjs/config';
     DatabaseModule,
     RmqModule,
   ],
-  controllers: [ParametersController],
-  providers: [ParametersService],
+  controllers: [SyncController],
+  providers: [SyncService],
 })
-export class ParametersModule {}
+export class SyncModule {}

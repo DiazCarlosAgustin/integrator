@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import { IsString } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -9,27 +8,25 @@ import {
   OneToMany,
   UpdateDateColumn,
 } from 'typeorm';
-import { ServiceParametersEntity } from './serviceParameters.entity';
-@Entity('parameters')
-export class ParametersEntity {
+import { ServicesEntity } from './services.entity';
+@Entity('platforms')
+export class PlatformsEntity {
   @Column({ type: 'uuid', length: 60, primary: true, nullable: false })
   @Generated('uuid')
   id: string;
 
   @Column({ nullable: false })
-  @IsString()
   name: string;
 
   @Column({ nullable: true })
-  @IsString()
-  value: string;
+  note: string;
 
-  @OneToMany(
-    () => ServiceParametersEntity,
-    (ServiceParameters) => ServiceParameters.parameter,
-  )
-  service_parameters: ServiceParametersEntity[];
-  
+  @OneToMany(() => ServicesEntity, (service) => service.origin_platform)
+  origin_platform: ServicesEntity[];
+
+  @OneToMany(() => ServicesEntity, (service) => service.destination_platform)
+  destination_platform: ServicesEntity[];
+
   @CreateDateColumn()
   createdAt: Date;
 
