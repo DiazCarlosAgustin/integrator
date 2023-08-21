@@ -1,3 +1,4 @@
+import { ServiceParameter } from './service_parameter/entities/service_parameter.entity';
 import {
   ServicesEntity,
   createServiceDto,
@@ -7,10 +8,12 @@ import {
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ServiceParameterService } from './service_parameter/service_parameter.service';
 
 @Injectable()
 export class ServicesService {
   constructor(
+    private readonly serviceParameter: ServiceParameterService,
     @InjectRepository(ServicesEntity)
     private readonly serviceRepository: Repository<ServicesEntity>,
     @InjectRepository(ServiceParametersEntity)
@@ -41,7 +44,7 @@ export class ServicesService {
 
   async findOne(id: string): Promise<any> {
     try {
-      return await this.serviceRepository.find({
+      const promiseService = this.serviceRepository.find({
         where: {
           id: id,
         },
@@ -51,16 +54,34 @@ export class ServicesService {
           origin_platform: true,
         },
       });
+      const promiseServiceParameter = this.serviceParameter.findOne(id);
+
+      /* The code `const [resultService, resultServiceParameter] = await Promise.all([promiseService,
+      promiseServiceParameter]);` is using the `Promise.all()` method to wait for multiple promises
+      to resolve. */
+      const [resultService, resultServiceParameter] = await Promise.all([
+        promiseService,
+        promiseServiceParameter,
+      ]);
+
+      if (!resultService) {
+        return null;
+      }
+
+      const obj = { parameters: {} };
+      if (resultServiceParameter) {
+        resultServiceParameter.forEach((item) => {
+          const name = item.name;
+          obj.parameters[name] = item;
+        });
+      }
+
+      const result = { ...resultService[0], parameters: obj.parameters };
+
+      return result;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
-
-  async findParameterByService(id: string): Promise<any> {
-    return await this.ServiceParamRepository
-      .query(`SELECT sp.id as id, p.id as parameter_id,p.name as name, sp.value as value FROM service_parameters sp
-                  LEFT OUTER JOIN parameters p ON sp.parameterId = p.id
-                  WHERE sp.serviceId = '${id}'`);
   }
 
   async update(id: string, updateServiceDto: updateServiceDto) {

@@ -9,30 +9,13 @@ export class SyncService {
   ) {}
   async executeFill(serviceId): Promise<any> {
     const service = serviceId.serviceId;
-    let result_service = await lastValueFrom(
+    const result_service = await lastValueFrom(
       this.servicesClient.send({ cmd: 'getServiceById' }, { service }),
-    ).then((result) => result[0]);
+    ).then((result) => result);
 
     if (!result_service) {
       throw new Error('This service does not exist or not have parameters');
     }
-
-    const parameters = await lastValueFrom(
-      this.servicesClient.send(
-        { cmd: 'getParametersByServiceId' },
-        { service },
-      ),
-    ).then((result) => result);
-
-    const obj_params = { parameters };
-
-    if (parameters) {
-      parameters.forEach((item) => {
-        const name = item.name;
-        obj_params.parameters[name] = item;
-      });
-    }
-    result_service = { ...result_service, parameters: obj_params.parameters };
 
     const result_login_flexxus = await lastValueFrom(
       this.flexxusClient.send(
