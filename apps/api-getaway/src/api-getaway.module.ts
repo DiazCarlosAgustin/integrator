@@ -7,6 +7,7 @@ import {
   PARAMETERS_SERVICES,
   SYNC_SERVICES,
   SERVICE_SERVICES,
+  FLEXXUS_SERVICES,
 } from './constants/services';
 
 @Module({
@@ -25,6 +26,9 @@ import {
     }),
     RmqModule.register({
       name: SYNC_SERVICES,
+    }),
+    RmqModule.register({
+      name: FLEXXUS_SERVICES,
     }),
   ],
   controllers: [ApiGatewayController],

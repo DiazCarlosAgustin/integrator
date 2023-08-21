@@ -2,6 +2,7 @@ import {
   ServicesEntity,
   createServiceDto,
   updateServiceDto,
+  ServiceParametersEntity,
 } from '@app/common';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,6 +13,8 @@ export class ServicesService {
   constructor(
     @InjectRepository(ServicesEntity)
     private readonly serviceRepository: Repository<ServicesEntity>,
+    @InjectRepository(ServiceParametersEntity)
+    private readonly ServiceParamRepository: Repository<ServiceParametersEntity>,
   ) {}
   async create(createService: createServiceDto) {
     try {
@@ -36,29 +39,28 @@ export class ServicesService {
     }
   }
 
-  async findOne(id: string) {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        const result = this.serviceRepository.find({
-          where: { id: id },
-          relations: {
-            company: true,
-            destination_platform: true,
-            origin_platform: true,
-            service_parameters: {
-              parameter: true,
-            },
-          },
-        });
-        resolve(result);
-      } catch (error) {
-        throw new HttpException(
-          error.message,
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-        reject(error.message);
-      }
-    });
+  async findOne(id: string): Promise<any> {
+    try {
+      return await this.serviceRepository.find({
+        where: {
+          id: id,
+        },
+        relations: {
+          company: true,
+          destination_platform: true,
+          origin_platform: true,
+        },
+      });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async findParameterByService(id: string): Promise<any> {
+    return await this.ServiceParamRepository
+      .query(`SELECT sp.id as id, p.id as parameter_id,p.name as name, sp.value as value FROM service_parameters sp
+                  LEFT OUTER JOIN parameters p ON sp.parameterId = p.id
+                  WHERE sp.serviceId = '${id}'`);
   }
 
   async update(id: string, updateServiceDto: updateServiceDto) {

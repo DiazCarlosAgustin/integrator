@@ -3,6 +3,7 @@ import { FlexxusController } from './flexxus.controller';
 import { FlexxusService } from './flexxus.service';
 import { RmqModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: './apps/api-getaway/.env',
     }),
     RmqModule,
+    HttpModule,
   ],
   controllers: [FlexxusController],
   providers: [FlexxusService],

@@ -13,6 +13,9 @@ import { ConfigModule } from '@nestjs/config';
     RmqModule.register({
       name: 'SERVICES',
     }),
+    RmqModule.register({
+      name: 'FLEXXUS',
+    }),
   ],
   controllers: [SyncController],
   providers: [SyncService],

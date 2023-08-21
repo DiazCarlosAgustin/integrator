@@ -1,6 +1,25 @@
 version: "3"
 services:
-  api_getaway:
+  db_mysql:
+      container_name: "db_mysql"
+      image: mysql
+      restart: always
+      command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        MYSQL_DATABASE: 'integrador'
+        MYSQL_USER: 'test'
+        MYSQL_PASSWORD: 'password'
+      ports:
+        - '3306:3306'
+      expose:
+        - '3306'
+      volumes:
+        - mysqldata_master:/var/lib/mysql
+      networks:
+        - network_test
+  api_gateway:
+      container_name: api_gateway
       build:
         context: .
         dockerfile: ./apps/api-getaway/Dockerfile
@@ -12,12 +31,12 @@ services:
         - db_mysql
         - rabbitmq
         - api_parameters
-        - api_auth
-        - api_companies
-        - api_flexxus
-        - api_products
         - api_services
         - api_sync
+        - api_flexxus
+        # - api_auth
+        # - api_companies
+        # - api_products
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -43,42 +62,42 @@ services:
         - '3001:3001'
       networks:
         - network_test
-  api_auth:
-      build:
-        context: .
-        dockerfile: ./apps/auth/Dockerfile
-        target: development
-      command: npm run start:dev auth
-      env_file:
-        - ./.env
-      depends_on:
-        - db_mysql
-        - rabbitmq
-      volumes:
-        - .:/usr/src/app
-        - /usr/src/app/node_modules
-      ports:
-        - '3002:3002'
-      networks:
-        - network_test
-  api_companies:
-      build:
-        context: .
-        dockerfile: ./apps/auth/Dockerfile
-        target: development
-      command: npm run start:dev companies
-      env_file:
-        - ./.env
-      depends_on:
-        - db_mysql
-        - rabbitmq
-      volumes:
-        - .:/usr/src/app
-        - /usr/src/app/node_modules
-      ports:
-        - '3003:3003'
-      networks:
-        - network_test
+  # api_auth:
+  #     build:
+  #       context: .
+  #       dockerfile: ./apps/auth/Dockerfile
+  #       target: development
+  #     command: npm run start:dev auth
+  #     env_file:
+  #       - ./.env
+  #     depends_on:
+  #       - db_mysql
+  #       - rabbitmq
+  #     volumes:
+  #       - .:/usr/src/app
+  #       - /usr/src/app/node_modules
+  #     ports:
+  #       - '3002:3002'
+  #     networks:
+  #       - network_test
+  # api_companies:
+  #     build:
+  #       context: .
+  #       dockerfile: ./apps/auth/Dockerfile
+  #       target: development
+  #     command: npm run start:dev companies
+  #     env_file:
+  #       - ./.env
+  #     depends_on:
+  #       - db_mysql
+  #       - rabbitmq
+  #     volumes:
+  #       - .:/usr/src/app
+  #       - /usr/src/app/node_modules
+  #     ports:
+  #       - '3003:3003'
+  #     networks:
+  #       - network_test
   api_flexxus:
       build:
         context: .
@@ -97,24 +116,24 @@ services:
         - '3004:3004'
       networks:
         - network_test
-  api_products:
-      build:
-        context: .
-        dockerfile: ./apps/products/Dockerfile
-        target: development
-      command: npm run start:dev products
-      env_file:
-        - ./.env
-      depends_on:
-        - db_mysql
-        - rabbitmq
-      volumes:
-        - .:/usr/src/app
-        - /usr/src/app/node_modules
-      ports:
-        - '3005:3005'
-      networks:
-        - network_test
+  # api_products:
+  #     build:
+  #       context: .
+  #       dockerfile: ./apps/products/Dockerfile
+  #       target: development
+  #     command: npm run start:dev products
+  #     env_file:
+  #       - ./.env
+  #     depends_on:
+  #       - db_mysql
+  #       - rabbitmq
+  #     volumes:
+  #       - .:/usr/src/app
+  #       - /usr/src/app/node_modules
+  #     ports:
+  #       - '3005:3005'
+  #     networks:
+  #       - network_test
   api_services:
       build:
         context: .
@@ -152,24 +171,6 @@ services:
       networks:
         - network_test
 
-  db_mysql:
-    image: mysql:5.7
-    restart: always
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: 'integrador'
-      MYSQL_USER: 'test'
-      MYSQL_PASSWORD: 'password'
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
-    volumes:
-      - my-db:/var/lib/mysql
-    networks:
-      - network_test
-
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -190,6 +191,7 @@ services:
 volumes:
   my-db:
     driver: local
+  mysqldata_master:
 networks:
   network_test:
     driver: bridge

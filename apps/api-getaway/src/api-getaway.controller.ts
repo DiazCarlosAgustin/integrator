@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, UseGuards, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Param,
+  Logger,
+} from '@nestjs/common';
 import { ApiGetawayService } from './api-getaway.service';
 import { JwtAuthGuard, ParametersDTO } from '@app/common';
 
@@ -28,6 +36,7 @@ export class ApiGatewayController {
   @Get('/sync/filltable/:serviceId')
   // @UseGuards(JwtAuthGuard)
   async runSyncFill(@Param('serviceId') serviceIde: string): Promise<any> {
+    Logger.error('ENTRE');
     await this.apiGetawayService.SyncExecute(serviceIde);
     return {
       message: 'The Sync was executed successfully',

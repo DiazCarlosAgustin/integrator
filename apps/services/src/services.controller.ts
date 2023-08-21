@@ -38,11 +38,22 @@ export class ServicesController {
     return await this.servicesService.findOne(id);
   }
   @MessagePattern({ cmd: 'getServiceById' })
-  async getServiceById(@Payload() data, @Ctx() context: RmqContext) {
-    return await this.servicesService.findOne(data.serviceId).then((result) => {
-      this.rmqService.ack(context);
-      return result;
-    });
+  async getServiceById(
+    @Payload() data,
+    @Ctx() context: RmqContext,
+  ): Promise<object> {
+    const service = await this.servicesService.findOne(data.service);
+    return service;
+  }
+  @MessagePattern({ cmd: 'getParametersByServiceId' })
+  async getParametersByServiceId(
+    @Payload() data,
+    @Ctx() context: RmqContext,
+  ): Promise<object> {
+    const service = await this.servicesService.findParameterByService(
+      data.service,
+    );
+    return service;
   }
 
   @Patch(':id')

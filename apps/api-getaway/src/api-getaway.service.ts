@@ -48,7 +48,7 @@ export class ApiGetawayService {
       if (!serviceId) {
         throw new HttpException(
           { error: true, message: 'Parameter serviceId is required' },
-          HttpStatus.PAYMENT_REQUIRED,
+          HttpStatus.BAD_GATEWAY,
         );
       }
       return await lastValueFrom(
